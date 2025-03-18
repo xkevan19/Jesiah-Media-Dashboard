@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard - Jesiah Desaine Media</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script defer src="js/dashboard.js"></script>
+    <script defer src="js/dashHeadComponents.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="min-h-screen text-zinc-200 bg-zinc-900 relative">
+
+    <div id="alertContainer" class="fixed top-0 left-0 right-0 p-4 z-50"></div>
+
+    <!-- Mobile Nav Overlay -->
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden md:hidden"></div>
+
+    <div class="flex h-screen overflow-hidden">
+        <aside id="sidebar"
+            class="sidebar w-64 h-full flex flex-col md:relative fixed inset-y-0 left-0 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out z-50 bg-zinc-900 border-r border-zinc-800">
+            <div class="p-4 border-b border-zinc-800 flex justify-between items-center">
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold gradient-text">JESIAH DESAINE</h1>
+                    <p class="text-zinc-500 text-xs md:text-sm">Admin Dashboard</p>
+                </div>
+                <button id="closeSidebar" class="md:hidden text-zinc-400 hover:text-white">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+
+            <nav>
+                <ul>
+                    <li>
+                        <a href="#" class="nav-item active">
+                            <div class="icon-container">
+                                <!-- Dashboard -->
+                                <svg class="rocket-default" viewBox="0 0 24 24" width="24" height="24">
+                                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" fill="currentColor" />
+                                </svg>
+                                <svg class="rocket-hover" viewBox="0 0 24 24" width="24" height="24">
+                                    <path d="M12,3.5c-2,0-3,2-3,4.5v3l-3,3h3v6h6v-6h3l-3-3V8c0-2.5-1-4.5-3-4.5z"
+                                        fill="currentColor" />
+                                    <ellipse cx="12" cy="20" rx="6" ry="1.5" fill="#ff7979" opacity="0.7" />
+                                    <ellipse cx="12" cy="21" rx="4" ry="1" fill="#ffbe76" opacity="0.6" />
+                                </svg>
+                            </div>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="category.html" class="nav-item">
+                            <div class="icon-container">
+                                <!-- Categories -->
+                                <svg class="folder-default" viewBox="0 0 24 24" width="24" height="24">
+                                    <path
+                                        d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"
+                                        fill="currentColor" />
+                                </svg>
+                                <svg class="folder-hover" viewBox="0 0 24 24" width="24" height="24">
+                                    <path
+                                        d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"
+                                        fill="currentColor" />
+                                </svg>
+                                <svg class="folder-files" viewBox="0 0 24 24" width="24" height="24">
+                                    <rect x="6" y="12" width="4" height="1" fill="white" />
+                                    <rect x="6" y="14" width="6" height="1" fill="white" />
+                                    <rect x="6" y="16" width="5" height="1" fill="white" />
+                                    <rect x="13" y="12" width="5" height="1" fill="white" />
+                                    <rect x="14" y="14" width="4" height="1" fill="white" />
+                                    <rect x="13" y="16" width="5" height="1" fill="white" />
+                                </svg>
+                            </div>
+                            <span>Categories</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="media.html" class="nav-item">
+                            <div class="icon-container">
+                                <!-- Media -->
+                                <svg class="camera-default" viewBox="0 0 24 24" width="24" height="24">
+                                    <path
+                                        d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9z"
+                                        fill="currentColor" />
+                                    <circle cx="12" cy="12" r="3" fill="#333" />
+                                </svg>
+                                <svg class="camera-hover" viewBox="0 0 24 24" width="24" height="24">
+                                    <path
+                                        d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9z"
+                                        fill="currentColor" />
+                                    <circle cx="12" cy="12" r="2" fill="#333" />
+                                </svg>
+                                <svg class="camera-flash" viewBox="0 0 24 24" width="24" height="24">
+                                    <circle cx="12" cy="12" r="6" fill="white" opacity="0.8" />
+                                </svg>
+                            </div>
+                            <span>Media</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="upload.html" class="nav-item">
+                            <div class="icon-container">
+                                <!-- Upload -->
+                                <svg class="upload-default" viewBox="0 0 24 24" width="24" height="24">
+                                    <path d="M9 16h6v-6h4l-7-7-7 7h4v6zm-4 2h14v2H5v-2z" fill="currentColor" />
+                                </svg>
+                                <svg class="upload-hover" viewBox="0 0 24 24" width="24" height="24">
+                                    <g class="upload-arrow">
+                                        <path d="M12 6l5 5h-3v4h-4v-4H7l5-5z" fill="currentColor" />
+                                    </g>
+                                    <g class="upload-cloud">
+                                        <path
+                                            d="M19 18H5a3 3 0 0 1-3-3c0-1.6 1.3-2.9 2.9-3a4 4 0 0 1 7.1-3.6c.5-.2 1-.4 1.5-.4a4 4 0 0 1 4 4c1.7 0 3 1.3 3 3s-1.3 3-3 3z"
+                                            fill="#1e90ff" opacity="0.8" />
+                                    </g>
+                                </svg>
+                            </div>
+                            <span>Upload</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="binary-blade.html" class="nav-item">
+                            <div class="icon-container">
+                                <!-- Binary Blade -->
+                                <svg class="crop-default" viewBox="0 0 24 24" width="24" height="24">
+                                    <path
+                                        d="M17 15h2V7c0-1.1-.9-2-2-2H9v2h8v8zM7 17V1H5v4H1v2h4v10c0 1.1.9 2 2 2h10v4h2v-4h4v-2H7z"
+                                        fill="currentColor" />
+                                </svg>
+                                <svg class="crop-hover" viewBox="0 0 24 24" width="24" height="24">
+                                    <g>
+                                        <!-- Scissors image being cut -->
+                                        <rect class="scissors-image" x="7" y="9" width="10" height="6" rx="1"
+                                            fill="#9b59b6" opacity="0.3" />
+                                        <!-- Scissors -->
+                                        <path class="scissors-top"
+                                            d="M7.5,7 C5.5,5 5.5,4 7.5,3 C9.5,2 11.5,4 9.5,6 L16,12"
+                                            stroke="currentColor" stroke-width="1.5" fill="none" />
+                                        <path class="scissors-bottom"
+                                            d="M7.5,17 C5.5,19 5.5,20 7.5,21 C9.5,22 11.5,20 9.5,18 L16,12"
+                                            stroke="currentColor" stroke-width="1.5" fill="none" />
+                                        <circle cx="7.5" cy="3.5" r="1.2" fill="currentColor" />
+                                        <circle cx="7.5" cy="20.5" r="1.2" fill="currentColor" />
+                                        <!-- Cut line -->
+                                        <path class="scissors-image" d="M8,12 L16,12" stroke="white" stroke-width="0.7"
+                                            stroke-dasharray="1,1" />
+                                    </g>
+                                </svg>
+                            </div>
+                            <span>Binary Blade</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- User Profile and Logout -->
+            <div class="border-t border-zinc-800 p-4">
+                <div class="flex items-center mb-4">
+                    <div
+                        class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-r from-[#7077FF] to-[#0037FF] flex items-center justify-center text-white">
+                        <span id="userInitials" class="text-sm md:text-base">JD</span>
+                    </div>
+                    <div class="ml-3">
+                        <p id="userName" class="font-medium text-sm md:text-base">Admin User</p>
+                        <p id="userEmail" class="text-xs md:text-sm text-zinc-500">admin@example.com</p>
+                    </div>
+                </div>
+                <button id="logoutBtn"
+                    class="logout-btn w-full text-left px-4 py-2 rounded-lg text-zinc-300 hover:text-white flex items-center">
+                    <div class="icon-container">
+                        <svg class="logout-default" viewBox="0 0 24 24" width="24" height="24">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"
+                                stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                        <svg class="logout-hover" viewBox="0 0 24 24" width="24" height="24">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke="currentColor" fill="none"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path class="arrow-path" d="M16 17l5-5-5-5" stroke="#7077ff" fill="none" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                            <path class="line-path" d="M21 12H9" stroke="#7077ff" fill="none" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 overflow-y-auto w-full pb-8">
+            <!-- Mobile Header with Menu Button -->
+            <div
+                class="md:hidden sticky top-0 z-30 bg-zinc-900/95 backdrop-blur-sm p-4 flex items-center justify-between border-b border-zinc-800">
+                <button id="openSidebar" class="text-zinc-300 hover:text-white">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+
+                <!-- Local Time - Only for Mobile -->
+                <div class="flex items-center text-zinc-200">
+                    <i class="fas fa-clock text-sm mr-1.5"></i>
+                    <p id="mobileUserTime" class="text-sm font-medium w-24 text-center user-time-element">12:00</p>
+                </div>
+
+                <div
+                    class="w-8 h-8 rounded-full bg-gradient-to-r from-[#7077FF] to-[#0037FF] flex items-center justify-center text-white text-sm">
+                    <span id="mobileUserInitials">JD</span>
+                </div>
+            </div>
+
+            <div class="md:sticky md:top-0 z-30 bg-zinc-900/95 backdrop-blur-sm border-b border-zinc-800 shadow-md">
+                <div class="container mx-auto px-4 py-3">
+                    <div class="flex items-center justify-between flex-wrap lg:flex-nowrap">
+                        <div class="hidden md:flex items-center space-x-4 order-1 lg:w-auto">
+                            <button id="openSidebar" class="md:hidden text-zinc-300 hover:text-white">
+                                <i class="fas fa-bars text-xl"></i>
+                            </button>
+
+                            <div class="flex items-center space-x-2 text-zinc-200">
+                                <i class="fas fa-clock text-sm"></i>
+                                <p id="userTime" class="text-sm font-medium w-24 text-left user-time-element">12:00</p>
+                            </div>
+
+                            <div class="relative group hidden md:block">
+                                <div class="flex items-center space-x-2 cursor-pointer text-zinc-200">
+                                    <i class="fas fa-cloud text-sm"></i>
+                                    <p id="weatherInfo" class="text-sm font-medium">Fetching...</p>
+                                </div>
+                                <!-- Weather Details Dropdown -->
+                                <div
+                                    class="absolute left-0 hidden group-hover:block bg-zinc-700 text-white p-4 rounded-lg shadow-lg mt-2 w-72 z-10">
+                                    <p id="weatherDetails">Detailed weather info here...</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dynamic Island Music Player -->
+                        <div class="hidden md:block flex-grow order-3 lg:order-2 lg:w-auto lg:px-4">
+                            <div
+                                class="music-island bg-zinc-800 rounded-full px-3 py-1.5 flex items-center space-x-3 transition-all duration-300 hover:bg-zinc-700 mx-auto max-w-xs lg:max-w-md xl:max-w-lg">
+                                <div class="music-wave flex items-end h-6 space-x-0.5">
+                                    <div
+                                        class="wave-bar bg-gradient-to-t from-[#7077FF] to-[#0037FF] w-1 h-2 animate-wave-1">
+                                    </div>
+                                    <div
+                                        class="wave-bar bg-gradient-to-t from-[#7077FF] to-[#0037FF] w-1 h-4 animate-wave-2">
+                                    </div>
+                                    <div
+                                        class="wave-bar bg-gradient-to-t from-[#7077FF] to-[#0037FF] w-1 h-3 animate-wave-3">
+                                    </div>
+                                    <div
+                                        class="wave-bar bg-gradient-to-t from-[#7077FF] to-[#0037FF] w-1 h-1 animate-wave-4">
+                                    </div>
+                                </div>
+
+                                <div class="flex-grow truncate">
+                                    <p class="text-xs font-medium text-white truncate">Currently Playing</p>
+                                    <p id="song-info" class="text-xs text-zinc-400 truncate">Artist - Song Name</p>
+
+                                    <!-- Progress Bar -->
+                                    <div class="w-full h-1 bg-zinc-600 rounded-full mt-1 overflow-hidden">
+                                        <div id="progress-bar"
+                                            class="h-full bg-gradient-to-r from-[#7077FF] to-[#0037FF] rounded-full"
+                                            style="width: 30%;"></div>
+                                    </div>
+                                </div>
+
+
+                                <div class="flex space-x-1.5 ml-3">
+                                    <button id="prev-btn" class="text-zinc-300 hover:text-white">
+                                        <i class="fas fa-backward text-xs"></i>
+                                    </button>
+                                    <button id="play-pause-btn" class="text-zinc-300 hover:text-white">
+                                        <i id="play-pause-icon" class="fas fa-play text-xs"></i>
+                                    </button>
+                                    <button id="next-btn" class="text-zinc-300 hover:text-white">
+                                        <i class="fas fa-forward text-xs"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Section: Action Buttons + User Profile (For md+ screens) -->
+                        <div
+                            class="hidden md:flex items-center justify-end space-x-2 lg:space-x-3 order-2 lg:order-3 lg:w-auto">
+                            <!-- Action Buttons -->
+                            <div class="flex items-center space-x-2">
+                                <button id="livePreviewButton"
+                                    class="px-2 py-1.5 bg-zinc-800 hover:bg-zinc-700 rounded-md text-xs text-zinc-200 flex items-center transition-colors">
+                                    <i class="fas fa-eye text-xs"></i>
+                                    <span class="hidden 2xl:inline ml-1.5">Live Preview</span>
+                                </button>
+                                <button id="visitDocsButton"
+                                    class="px-2 py-1.5 bg-zinc-800 hover:bg-zinc-700 rounded-md text-xs text-zinc-200 flex items-center transition-colors">
+                                    <i class="fas fa-book text-xs"></i>
+                                    <span class="hidden 2xl:inline ml-1.5">Visit Docs</span>
+                                </button>
+                                <button id="jokeButton"
+                                    class="px-2 py-1.5 bg-zinc-800 hover:bg-zinc-700 rounded-md text-xs text-zinc-200 flex items-center transition-colors joke-button">
+                                    <i class="fas fa-laugh text-xs"></i>
+                                    <span class="hidden 2xl:inline ml-1.5">Get a Joke</span>
+                                </button>
+                                <button id="contactSupportButton"
+                                    class="px-2 py-1.5 bg-gradient-to-r from-[#7077FF] to-[#0037FF] rounded-md text-xs text-white flex items-center transition-all hover:shadow-lg">
+                                    <i class="fas fa-headset text-xs"></i>
+                                    <span class="hidden 2xl:inline ml-1.5">Contact Support</span>
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Mobile-Only Action Buttons Row -->
+                    <div class="flex md:hidden items-center justify-between mt-3 space-x-2">
+                        <button id="mobileLivePreviewButton"
+                            class="flex-1 px-2 py-1.5 bg-zinc-800 hover:bg-zinc-700 rounded-md text-xs text-zinc-200 flex items-center justify-center">
+                            <i class="fas fa-eye text-xs"></i>
+                        </button>
+                        <button id="mobileVisitDocsButton"
+                            class="flex-1 px-2 py-1.5 bg-zinc-800 hover:bg-zinc-700 rounded-md text-xs text-zinc-200 flex items-center justify-center">
+                            <i class="fas fa-book text-xs"></i>
+                        </button>
+                        <button id="mobileJokeButton"
+                            class="flex-1 px-2 py-1.5 bg-zinc-800 hover:bg-zinc-700 rounded-md text-xs text-zinc-200 flex items-center justify-center joke-button">
+                            <i class="fas fa-laugh text-xs"></i>
+                        </button>
+                        <button id="mobileContactSupportButton"
+                            class="flex-1 px-2 py-1.5 bg-gradient-to-r from-[#7077FF] to-[#0037FF] rounded-md text-xs text-white flex items-center justify-center">
+                            <i class="fas fa-headset text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="jokeModal"
+                class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
+                <div class="bg-zinc-800 p-4 md:p-6 rounded-lg shadow-lg w-full max-w-md mx-4">
+                    <h2 class="text-xl md:text-2xl font-bold mb-4 text-center text-white">Random Joke</h2>
+                    <p id="modalJoke" class="text-base md:text-lg text-center text-white mb-4">Loading joke...</p>
+                    <div class="flex justify-center">
+                        <button id="laughButton" class="text-2xl md:text-3xl text-yellow-400 mx-2">😂</button>
+                        <button id="sadButton" class="text-2xl md:text-3xl text-blue-400 mx-2">😢</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rainfall Effect for Emojis -->
+            <div id="emojiRain" class="absolute pointer-events-none w-full h-full top-0 left-0 overflow-hidden z-40">
+            </div>
+
+            <div class="p-3 md:p-6">
+                <!-- Stats Overview -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 mb-4 md:mb-8">
+                    <div class="stat-card p-3 md:p-6 rounded-xl">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-zinc-400 text-sm">Total Media</p>
+                                <h3 class="text-lg md:text-2xl font-bold mt-1" id="totalMedia">0</h3>
+                            </div>
+                            <div
+                                class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-red-500/10 flex items-center justify-center">
+                                <i class="fas fa-photo-film text-red-500"></i>
+                            </div>
+                        </div>
+                        <p class="text-xs md:text-sm text-zinc-500 mt-2">Total amount of images on your website</p>
+                    </div>
+
+                    <div class="stat-card p-3 md:p-6 rounded-xl">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-zinc-400 text-sm">Categories</p>
+                                <h3 class="text-lg md:text-2xl font-bold mt-1" id="totalCategories">0</h3>
+                            </div>
+                            <div
+                                class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-orange-500/10 flex items-center justify-center">
+                                <i class="fas fa-folder text-orange-500"></i>
+                            </div>
+                        </div>
+                        <p class="text-xs md:text-sm text-zinc-500 mt-2">Total amount of categories on your website
+                        </p>
+                    </div>
+
+                    <div class="stat-card p-3 md:p-6 rounded-xl">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-zinc-400 text-sm">Storage Used</p>
+                                <h3 class="text-lg md:text-2xl font-bold mt-1" id="storageUsed">0 KB / 1 GB</h3>
+                            </div>
+                            <div
+                                class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-blue-500/10 flex items-center justify-center">
+                                <i class="fas fa-database text-blue-500"></i>
+                            </div>
+                        </div>
+                        <div class="w-full bg-zinc-800 rounded-full h-2 md:h-2.5 mt-2">
+                            <div id="storageProgressBar" class="bg-[#7077FF] h-2 md:h-2.5 rounded-full"
+                                style="width: 0%"></div>
+                        </div>
+                        <p class="text-xs md:text-sm text-zinc-500 mt-2" id="storagePercentage">0% of total capacity
+                        </p>
+                    </div>
+
+                    <div class="stat-card p-3 md:p-6 rounded-xl">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-zinc-400 text-sm">Primary Media Type</p>
+                                <h3 class="text-lg md:text-2xl font-bold mt-1" id="primaryMediaType">-</h3>
+                            </div>
+                            <div
+                                class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-purple-500/10 flex items-center justify-center">
+                                <i class="fas fa-shapes text-purple-500"></i>
+                            </div>
+                        </div>
+                        <p class="text-xs md:text-sm text-zinc-500 mt-2" id="mediaTypeBreakdown">Loading data...</p>
+                    </div>
+                </div>
+
+                <!-- Activity sections -->
+                <div class="grid grid-cols-1 lg:grid-cols-1 gap-4 md:gap-6">
+                    <div class="dashboard-container rounded-xl p-3 md:p-6 mb-4 md:mb-2">
+                        <h2 class="text-base md:text-xl font-bold mb-3 md:mb-4">Recent Activity</h2>
+                        <div class="rounded-lg shadow-lg">
+                            <h3 class="text-sm md:text-md font-semibold mb-2 md:mb-3 text-zinc-300">Activity Table</h3>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm md:text-base">
+                                    <thead>
+                                        <tr class="text-left text-zinc-400 border-b border-zinc-800">
+                                            <th class="pb-2 md:pb-3 font-medium">Action</th>
+                                            <th class="pb-2 md:pb-3 font-medium hidden sm:table-cell">Item</th>
+                                            <th class="pb-2 md:pb-3 font-medium hidden md:table-cell">Category</th>
+                                            <th class="pb-2 md:pb-3 font-medium">Date</th>
+                                            <th class="pb-2 md:pb-3 font-medium">User</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="activityTable"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-container rounded-xl p-3 md:p-6 mb-4 md:mb-8">
+                        <h2 class="text-base md:text-xl font-bold mb-3 md:mb-4">Activity Breakdown</h2>
+                        <div class="rounded-lg shadow-lg">
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <button id="toggleBarChart"
+                                    class="px-3 md:px-6 py-2 md:py-3 bg-zinc-800 text-white rounded-lg shadow-md hover:bg-zinc-600 active:bg-zinc-600 transition duration-200 flex items-center space-x-2 text-sm md:text-base">
+                                    <i class="fas fa-chart-bar"></i>
+                                    <span>Bar Chart</span>
+                                </button>
+                                <button id="toggleLineChart"
+                                    class="px-3 md:px-6 py-2 md:py-3 bg-zinc-800 text-white rounded-lg shadow-md hover:bg-zinc-600 active:bg-zinc-600 transition duration-200 flex items-center space-x-2 text-sm md:text-base">
+                                    <i class="fas fa-chart-line"></i>
+                                    <span>Line Chart</span>
+                                </button>
+                            </div>
+                            <div class="w-full h-48 md:h-64 lg:h-72">
+                                <canvas id="recentActivityChart" class="w-full h-full"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Quick Actions -->
+                <div class="dashboard-container rounded-xl p-3 md:p-6">
+                    <h2 class="text-base md:text-xl font-bold mb-3 md:mb-4">Quick Actions</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+                        <a href="upload.html"
+                            class="bg-gradient-to-r from-[#7077FF]/20 to-[#0037FF]/20 p-3 md:p-4 rounded-lg flex items-center hover:from-[#7077FF]/30 hover:to-[#0037FF]/30 transition-all">
+                            <div
+                                class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-r from-[#7077FF] to-[#0037FF] flex items-center justify-center text-white mr-3">
+                                <i class="fas fa-upload text-sm md:text-base"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-sm md:text-base">Upload New Media</h3>
+                                <p class="text-xs md:text-sm text-zinc-400">Add new images</p>
+                            </div>
+                        </a>
+                        <a href="category.html"
+                            class="bg-gradient-to-r from-[#7077FF]/20 to-[#0037FF]/20 p-3 md:p-4 rounded-lg flex items-center hover:from-[#7077FF]/30 hover:to-[#0037FF]/30 transition-all">
+                            <div
+                                class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-r from-[#7077FF] to-[#0037FF] flex items-center justify-center text-white mr-3">
+                                <i class="fas fa-folder-plus text-sm md:text-base"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-sm md:text-base">Create Category</h3>
+                                <p class="text-xs md:text-sm text-zinc-400">Organize your content</p>
+                            </div>
+                        </a>
+                        <a href="media.html"
+                            class="bg-gradient-to-r from-[#7077FF]/20 to-[#0037FF]/20 p-3 md:p-4 rounded-lg flex items-center hover:from-[#7077FF]/30 hover:to-[#0037FF]/30 transition-all">
+                            <div
+                                class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-r from-[#7077FF] to-[#0037FF] flex items-center justify-center text-white mr-3">
+                                <i class="fas fa-search text-sm md:text-base"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-sm md:text-base">Browse Media</h3>
+                                <p class="text-xs md:text-sm text-zinc-400">Organize your content</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <footer class="mt-8 p-4 border-t border-zinc-800 text-center">
+                    <div class="flex flex-col items-center justify-center space-y-2">
+                        <p class="text-sm text-zinc-400">© 2025 Jesiah Desaine Media. All rights reserved.</p>
+                        <div class="flex space-x-4">
+                            <a href="#" class="text-zinc-400 hover:text-white transition-colors">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="#" class="text-zinc-400 hover:text-white transition-colors">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                        </div>
+                        <p class="text-xs text-zinc-500">Version 1.0.2</p>
+                    </div>
+                </footer>
+            </div>
+        </main>
+    </div>
+
+    <button id="backToTopBtn"
+        class="fixed bottom-6 right-6 bg-gradient-to-r from-[#7077FF] to-[#0037FF] text-white p-3 rounded-full shadow-lg opacity-0 invisible transition-all duration-300 z-50">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+    <script src="js/auth-util.js"></script>
+    <script src="js/music.js"></script>
+</body>
+
+</html>

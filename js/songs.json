@@ -1,0 +1,22 @@
+[
+    {
+        "title": "Where Are We Going",
+        "artist": "Treyarch Sound, Brian T., James M. & Kevin S.",
+        "src": "js/songs/Where Are We Going.mp3/"
+    },
+    {
+        "title": "Lullaby Of A Deadman",
+        "artist": "Treyarch Sound, Brian T., James M. & Kevin S.",
+        "src": "js/songs/Lullaby Of A Deadman.mp3"
+    },
+    {
+        "title": "Love Me Again",
+        "artist": "John Newman",
+        "src": "js/songs/Love Me Again.mp3"
+    },
+    {
+        "title": "Lose Yourself",
+        "artist": "Eminem",
+        "src": "js/songs/Lose Yourself.mp3"
+    }
+]

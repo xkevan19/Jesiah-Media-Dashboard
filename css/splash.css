@@ -1,0 +1,185 @@
+:root {
+    /* Colors */
+    --bg-dark: #0f0f0f;
+    --bg-splash: #000000;
+    --text-white: white;
+    --text-light: rgba(255, 255, 255, 0.7);
+    --text-lighter: rgba(255, 255, 255, 0.6);
+    --outline-blue: rgb(0, 13, 255);
+    --outline-blue-light: rgba(0, 13, 255, 0.5);
+    --outline-blue-lighter: rgba(0, 13, 255, 0.1);
+    --pulse-blue: rgba(0, 13, 255, 0.3);
+    --progress-bg: rgba(255, 255, 255, 0.1);
+    --progress-gradient: linear-gradient(to right, #7077FF, #0037FF);
+
+    /* Spacing */
+    --margin-small: 0.5rem;
+    --margin-medium: 1.5rem;
+    --margin-large: 3rem;
+    --letter-spacing-small: 1px;
+    --letter-spacing-medium: 2px;
+    --border-radius-circle: 50%;
+    --border-radius-rounded: 3px;
+
+    /* Sizes */
+    --logo-size: 300px;
+    --logo-outline-size: 250px;
+    --logo-outline-2-size: 280px;
+    --logo-outline-3-size: 320px;
+    --logo-image-size: 180px;
+    --progress-width: 250px;
+    --progress-height: 3px;
+
+    /* Fonts */
+    --font-family-base: 'Inter', sans-serif;
+    --font-size-base: 1rem;
+    --font-size-subtitle: 1.1rem;
+    --font-size-loading: 0.85rem;
+    --font-weight-regular: 400;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-dark);
+    font-family: var(--font-family-base);
+    overflow: hidden;
+    color: var(--text-white);
+}
+
+#splash-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    background-color: var(--bg-splash);
+}
+
+.splash-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+}
+
+#particles-js {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.logo-container {
+    position: relative;
+    width: var(--logo-size);
+    height: var(--logo-size);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-outline {
+    position: absolute;
+    width: var(--logo-outline-size);
+    height: var(--logo-outline-size);
+    border: 2px solid var(--outline-blue);
+    border-radius: var(--border-radius-circle);
+}
+
+.logo-outline-2 {
+    position: absolute;
+    width: var(--logo-outline-2-size);
+    height: var(--logo-outline-2-size);
+    border: 1px solid var(--outline-blue-light);
+    border-radius: var(--border-radius-circle);
+}
+
+.logo-outline-3 {
+    position: absolute;
+    width: var(--logo-outline-3-size);
+    height: var(--logo-outline-3-size);
+    border: 1px solid var(--outline-blue-lighter);
+    border-radius: var(--border-radius-circle);
+}
+
+.logo-image {
+    width: var(--logo-image-size);
+    height: var(--logo-image-size);
+    opacity: 0;
+    transform: scale(0.8);
+    filter: brightness(0) invert(1);
+}
+
+.logo-subtitle {
+    margin-top: var(--margin-medium);
+    font-size: var(--font-size-subtitle);
+    font-weight: var(--font-weight-regular);
+    color: var(--text-light);
+    letter-spacing: var(--letter-spacing-medium);
+    text-transform: uppercase;
+    opacity: 0;
+}
+
+.loading-indicator {
+    margin-top: var(--margin-large);
+    width: 100%;
+    text-align: center;
+    color: var(--text-lighter);
+}
+
+.progress-container {
+    width: var(--progress-width);
+    height: var(--progress-height);
+    background: var(--progress-bg);
+    border-radius: var(--border-radius-rounded);
+    overflow: hidden;
+    margin: 12px auto;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: var(--progress-gradient);
+    border-radius: var(--border-radius-rounded);
+}
+
+.pulse {
+    position: absolute;
+    border-radius: var(--border-radius-circle);
+    background: var(--pulse-blue);
+    transform: scale(0);
+    opacity: 0;
+}
+
+.fade-out {
+    animation: fadeOut 0.8s ease-in-out forwards;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+.loading-text {
+    font-size: var(--font-size-loading);
+    margin-top: var(--margin-small);
+    letter-spacing: var(--letter-spacing-small);
+}
+
+.dots {
+    display: inline-block;
+    width: 20px;
+    text-align: left;
+}

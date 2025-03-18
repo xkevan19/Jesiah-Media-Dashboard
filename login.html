@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login - Jesiah Desaine Media</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex items-center justify-center p-4">
+    <div id="particles-js"></div>
+    <div class="w-full max-w-md login-container p-8 rounded-xl shadow-2xl">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl tracking-wide font-bold text-white">Admin Access</h1>
+            <p class="text-gray-400 mt-2">Enter credentials to continue</p>
+        </div>
+
+        <div class="space-y-6">
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email</label>
+                <input type="email" id="email"
+                    class="input-field w-full px-4 py-3 rounded-lg text-gray-200 focus:outline-none"
+                    placeholder="your@email.com">
+            </div>
+
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-300 mb-2">Password</label>
+                <div class="relative">
+                    <input type="password" id="password" autocomplete="off"
+                        class="input-field w-full px-4 py-3 rounded-lg text-gray-200 focus:outline-none"
+                        placeholder="••••••••">
+                    <button type="button" id="togglePassword" class="absolute right-3 top-3 text-gray-400">
+                        <i class="fa-solid fa-eye"></i>
+                    </button>
+                </div>
+                <p id="capsWarning" class="text-yellow-500 text-sm hidden text-center mt-3"><i
+                        class="fa-solid fa-exclamation-triangle"></i>
+                    Caps Lock is ON</p>
+            </div>
+
+            <button id="loginBtn"
+                class="login-btn w-full bg-gradient-to-r from-[#7077FF] to-[#0037FF] text-white font-bold py-3 px-4 rounded-lg">
+                Sign In
+            </button>
+
+            <p id="status" class="mt-4 text-center text-gray-300 min-h-[24px]"></p>
+        </div>
+
+        <div class="mt-8 text-center text-gray-500 text-sm">
+            <p>© 2025 Jesiah Desaine Media</p>
+        </div>
+    </div>
+
+    <script src="auth-util.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", async function () {
+            const { createClient } = window.supabase;
+            let supabaseClient;
+
+            // Securely fetch Supabase configuration
+            const fetchSupabaseConfig = async () => {
+                try {
+                    const response = await fetch('/.netlify/functions/getsupabaseconfig');
+                    if (!response.ok) throw new Error('Failed to fetch configuration');
+                    return await response.json();
+                } catch (error) {
+                    console.error('Error fetching config:', error);
+                    document.getElementById("status").innerText = "Configuration error. Please contact support.";
+                    document.getElementById("status").className = "mt-4 text-center text-red-500 min-h-[24px]";
+                    return null;
+                }
+            };
+
+            // Check if user is already logged in
+            const checkExistingSession = async () => {
+                try {
+                    const config = await fetchSupabaseConfig();
+                    if (!config) return false;
+
+                    supabaseClient = createClient(config.url, config.key);
+                    const { data: { session }, error } = await supabaseClient.auth.getSession();
+
+                    if (error) {
+                        console.error("Session check error:", error.message);
+                        return false;
+                    }
+
+                    if (session) {
+                        console.log("Active session found, redirecting to dashboard");
+                        window.location.href = "dash.html";
+                        return true;
+                    }
+
+                    return false;
+                } catch (error) {
+                    console.error("Session check failed:", error.message);
+                    return false;
+                }
+            };
+
+            // Handle login form
+            const handleLogin = async () => {
+                const email = document.getElementById("email").value;
+                const password = document.getElementById("password").value;
+                const status = document.getElementById("status");
+                const loginBtn = document.getElementById("loginBtn");
+
+                // Simple validation
+                if (!email || !password) {
+                    status.innerText = "Please enter both email and password.";
+                    status.className = "mt-4 text-center text-yellow-500 min-h-[24px]";
+                    return;
+                }
+
+                // Show loading state
+                loginBtn.disabled = true;
+                loginBtn.innerHTML = '<svg class="animate-spin h-5 w-5 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>';
+
+                try {
+                    // Initialize Supabase if not already done
+                    if (!supabaseClient) {
+                        const config = await fetchSupabaseConfig();
+                        if (!config) throw new Error("Unable to load configuration");
+                        supabaseClient = createClient(config.url, config.key);
+                    }
+
+                    const { data, error } = await supabaseClient.auth.signInWithPassword({
+                        email, password
+                    });
+
+                    if (error) {
+                        status.innerText = `Access denied: ${error.message}`;
+                        status.className = "mt-4 text-center text-red-500 min-h-[24px]";
+                    } else {
+                        status.innerText = "Login successful!";
+                        status.className = "mt-4 text-center text-green-500 min-h-[24px]";
+                        setTimeout(() => {
+                            window.location.href = "dash.html"; // Redirect after login
+                        }, 1000);
+                    }
+                } catch (error) {
+                    status.innerText = `System error: ${error.message}`;
+                    status.className = "mt-4 text-center text-red-500 min-h-[24px]";
+                } finally {
+                    loginBtn.disabled = false;
+                    loginBtn.innerHTML = "Sign In";
+                }
+            };
+
+            // Check for existing session first
+            await checkExistingSession();
+
+            document.getElementById("loginBtn").addEventListener("click", handleLogin);
+            document.getElementById("password").addEventListener("keypress", function (event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    handleLogin();
+                }
+            });
+
+            const passwordInput = document.getElementById("password");
+            const togglePassword = document.getElementById("togglePassword");
+            const capsWarning = document.getElementById("capsWarning");
+            const icon = togglePassword.querySelector("i");
+
+            // Toggle Password Visibility
+            togglePassword.addEventListener("click", function () {
+                if (passwordInput.type === "password") {
+                    passwordInput.type = "text";
+                    icon.classList.remove("fa-eye");
+                    icon.classList.add("fa-eye-slash");
+                } else {
+                    passwordInput.type = "password";
+                    icon.classList.remove("fa-eye-slash");
+                    icon.classList.add("fa-eye");
+                }
+            });
+
+            // Check for Caps Lock
+            passwordInput.addEventListener("keyup", function (event) {
+                if (event.getModifierState("CapsLock")) {
+                    capsWarning.classList.remove("hidden");
+                } else {
+                    capsWarning.classList.add("hidden");
+                }
+            });
+            particlesJS("particles-js", {
+                particles: {
+                    number: { value: 100 },
+                    size: { value: 3 },
+                    move: { speed: 2 },
+                    color: { value: "#7077FF" }
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

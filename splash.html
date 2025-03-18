@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Welcome - Jesiah Desaine Media</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/splash.css">
+
+</head>
+
+<body>
+    <div id="splash-container">
+        <div id="particles-js"></div>
+
+        <div class="splash-content">
+            <div class="logo-container">
+                <div class="logo-outline"></div>
+                <div class="logo-outline-2"></div>
+                <div class="logo-outline-3"></div>
+                <div class="pulse" id="pulse1"></div>
+                <div class="pulse" id="pulse2"></div>
+                <div class="pulse" id="pulse3"></div>
+                <img src="img/jes-des-media-logo.webp" class="logo-image" id="logo-img" alt="Jesiah Desaine Media Logo">
+            </div>
+
+            <p class="logo-subtitle">Jesiah Desaine Dashboard</p>
+
+            <div class="loading-indicator">
+                <div class="progress-container">
+                    <div class="progress-bar" id="progress-bar"></div>
+                </div>
+                <p class="loading-text">Initializing<span class="dots" id="loading-dots">.</span></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/splash.js"></script>
+</body>
+
+</html>
