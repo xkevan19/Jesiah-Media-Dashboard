@@ -134,13 +134,13 @@ document.addEventListener("DOMContentLoaded", () => {
   document
     .getElementById("visitDocsButton")
     .addEventListener("click", function () {
-      window.open("https://jesiahdocs.netlify.app/", "_blank");
+      window.open("https://jd-docs.netlify.app", "_blank");
     });
 
   document
     .getElementById("contactSupportButton")
     .addEventListener("click", function () {
-      window.open("https://jesiahdocs.netlify.app/contact.html", "_blank");
+      window.open("https://jd-docs.netlify.app/support.html", "_blank");
     });
 
   // 2.3. Mobile Button Event Listeners
@@ -153,13 +153,13 @@ document.addEventListener("DOMContentLoaded", () => {
   document
     .getElementById("mobileVisitDocsButton")
     .addEventListener("click", function () {
-      window.open("https://jesiahdocs.netlify.app/", "_blank");
+      window.open("https://jd-docs.netlify.app", "_blank");
     });
 
   document
     .getElementById("mobileContactSupportButton")
     .addEventListener("click", function () {
-      window.open("https://jesiahdocs.netlify.app/contact.html", "_blank");
+      window.open("https://jd-docs.netlify.app/support.html", "_blank");
     });
 
   // 2.4. Joke Button Event Listeners
